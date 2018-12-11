@@ -4,7 +4,7 @@
 
 # Site
 title: 江湖过客
-subtitle:      '    fyy的博客'
+subtitle: fyy的博客
 description:
 keywords:
 author: YingYou FU
@@ -78,4 +78,8 @@ theme: maupassant
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo:
+    coding: git@git.coding.net:home-fyy/home-fyy.git,coding-pages
+    github: git@github.com:fyyhome/fyyhome.github.io.git,master
+  branch: coding-pages
