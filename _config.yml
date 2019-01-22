@@ -80,6 +80,6 @@ theme: maupassant
 deploy:
   type: git
   repo:
-    coding: git@git.coding.net:home-fyy/home-fyy.git,coding-pages
+    coding: git@git.coding.net:home-fyy/home-fyy.git,master
     github: git@github.com:fyyhome/fyyhome.github.io.git,master
   branch: coding-pages
