@@ -2,7 +2,7 @@
 title: docker部署前端dist文件入门
 date: 2018-05-03 21:58:19
 tags: docker
-category: 后端技术
+category: 前端之外
 ---
 
 ### 前言
@@ -91,3 +91,12 @@ category: 后端技术
         docker build -t my-nginx .
         docker run -p 8080:80 -d my-nginx
 到此结束，你可以访问看看是否成功。以上只是自己入门过程的一些理解，不一定是最正确的，只是当作一个笔记让自己以后方便复习。
+
+写nginx配置时只要写server指令块，如果有其他event和http这些指令会报错（主要因为它会第二次加载其他配置） 然后用该配置替换docker里的nginx默认default.conf。
+
+### 补记
+docker构建可以理解为多个docker commit，Dockerfile里的每条指令都会commit一次，产生一个镜像层，所以执行一些shell命令时尽量用一个RUN指令。
+docker构建是基于c/s形式的，本地客户端运行命令实际是操作远程服务端的docker引擎
+> docker build [选项] <上下文路径/URL/->
+
+注意上下文路径的理解，构建过程中我们经常会用到本地的一些文件资源，然而构建实在远程服务端，所以构建时客户端会把指定上下文的路径下所有的文件上传到服务端，当运行COPY指令时指定的**源文件路径**实际是**相对上下文路径**的，**目标文件路径**则是**绝对路径或者相对（WORKDIR）的路径**！

@@ -2,6 +2,7 @@
 title: coding仓库搭博客图床
 date: 2019-01-22 16:33:43
 tags: hexo
+comments: true
 ---
 
 ### 前言
