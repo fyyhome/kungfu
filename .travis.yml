@@ -6,6 +6,6 @@ script: hexo generate && hexo server
 deploy: 
   provider: pages
   skip_cleanup: true
-  github_token: YTLjMEkTIKs1HoFvfJBTzw
+  github_token: $github_token
   on:
     branch: master
