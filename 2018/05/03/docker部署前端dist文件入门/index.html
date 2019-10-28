@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>docker部署前端dist文件入门 | kungfufu</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">docker部署前端dist文件入门</h1><a id="logo" href="/.">kungfufu</a><p class="description">kungfufu的博客</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">docker部署前端dist文件入门</h1><div class="post-meta">May 3, 2018<span> | </span><span class="category"><a href="/categories/技术/">技术</a></span></div><div class="post-content"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>之前一直想学习一下怎仫在服务器上部署web项目，因为每次自己写完页面都要找后端部署，而且每次修改一个bug就要让后端在服务器上更新一下，这样多改几次bug就会让前后端都很烦。于是我就跟着教程学了一下docker，了解了一下nginx，下面是制作nginx镜像部署web的一个学习笔记。</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><ul>
+<li>1.安装docker<br>请根据自己的系统自行安装</li>
+<li>2.查看是否安装成功<pre><code>docker -version
+</code></pre></li>
+<li>3.了解docker<pre><code>docker三大支柱：镜像库、镜像、容器。
+容器是一个独立的运行环境，所以它解决了应用的移植问题，只需制作相应的镜像就可以在任何装有docker的环境下运行。
+*镜像是一个特殊的文件系统，包含一些配置，依赖，程序库等等资源。镜像原理主要是镜像层，其依赖于一系列底层技术，也就是镜像最低层的base层。
+</code></pre></li>
+<li>4.本文用到的docker命令<pre><code>docker images//查看镜像
+docker pull xx镜像//从创库拉取xx镜像
+docker run -p xxxx:xx -d xx镜像//以后台方式运行xx镜像的容器，-p指定端口映射
+docker ps//查看在运行的镜像
+docker rm xx//删除容器
+docker stop xx//停止容器
+docker rmi xx//删除镜像
+docker build -t image-name .//创建镜像，“.”是Dockerfile文件所在目录，可以指定绝对路径
+docker exec -it bash//进入容器的伪终端，参数请参阅 –help
+cat、touch、vim这几个Linux终端命令也会用到
+</code></pre></li>
+<li>5.拉取官方nginx镜像<pre><code>docker search nginx
+docker pull nginx//如果网速太慢可以到网易的镜像库拉取
+</code></pre></li>
+<li><p>6.把自己的dist文件夹传到主机API文件夹下，修改默认nginx配置</p>
+<pre><code>touch default.conf
+vim default.conf
+//从标准nginx的默认配置复制default.conf内容，然后编辑内容如下
+server {
+  listen       80;  
+  server_name  localhost;
+
+  #charset koi8-r;
+  #access_log  /var/log/nginx/host.access.log  main;
+
+  location / {
+      root   /usr/share/nginx/html/dist;  //主要是修改这里
+      index  index.html index.htm;
+  }
+
+  #error_page  404              /404.html;
+
+  # redirect server error pages to the static page /50x.html
+  #
+  error_page   500 502 503 504  /50x.html;
+  location = /50x.html {
+      root   /usr/share/nginx/html;
+  }
+
+  # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+  #
+  #location ~ \.php$ {
+  #    proxy_pass   http://127.0.0.1;
+  #}
+
+  # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+  #
+  #location ~ \.php$ {
+  #    root           html;
+  #    fastcgi_pass   127.0.0.1:9000;
+  #    fastcgi_index  index.php;
+  #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+  #    include        fastcgi_params;
+  #}
+
+  # deny access to .htaccess files, if Apache&apos;s document root
+  # concurs with nginx&apos;s one
+  #
+  #location ~ /\.ht {
+  #    deny  all;
+  #}
+}
+</code></pre></li>
+<li>7.制作Dockerfile，文件放在和API同一个目录下<pre><code>touch Dockerfile
+vim Dockerfile
+//编辑如下
+FROM nginx
+MAINTAINER fyy
+ADD API /usr/share/nginx/html  //把API文件夹下的文件复制到容器的相应文件夹下
+COPY default.conf /etc/nginx/conf.d/default.conf  //用自己编辑的配置文件替换nginx容器内的默认配置
+</code></pre></li>
+<li>8.生成自己的nginx镜像,然后运行<pre><code>docker build -t my-nginx .
+docker run -p 8080:80 -d my-nginx
+</code></pre>到此结束，你可以访问看看是否成功。以上只是自己入门过程的一些理解，不一定是最正确的，只是当作一个笔记让自己以后方便复习。</li>
+</ul>
+<p>写nginx配置时只要写server指令块，如果有其他event和http这些指令会报错（主要因为它会第二次加载其他配置） 然后用该配置替换docker里的nginx默认default.conf。</p>
+<h3 id="补记"><a href="#补记" class="headerlink" title="补记"></a>补记</h3><p>docker构建可以理解为多个docker commit，Dockerfile里的每条指令都会commit一次，产生一个镜像层，所以执行一些shell命令时尽量用一个RUN指令。<br>docker构建是基于c/s形式的，本地客户端运行命令实际是操作远程服务端的docker引擎</p>
+<blockquote>
+<p>docker build [选项] &lt;上下文路径/URL/-&gt;</p>
+</blockquote>
+<p>注意上下文路径的理解，构建过程中我们经常会用到本地的一些文件资源，然而构建实在远程服务端，所以构建时客户端会把指定上下文的路径下所有的文件上传到服务端，当运行COPY指令时指定的<strong>源文件路径</strong>实际是<strong>相对上下文路径</strong>的，<strong>目标文件路径</strong>则是<strong>绝对路径或者相对（WORKDIR）的路径</strong>！</p>
+</div><div class="tags"><a href="/tags/docker/">docker</a></div><div class="post-nav"><a class="pre" href="/2018/10/28/浅谈浏览器复制内容到剪切板/">浅谈浏览器复制内容到剪切板</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://fyyhome.top"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/03/04/js那些剪不断，理还乱的继承/">js那些剪不断，理还乱的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/28/理解事件循环机制-EventLoop/">理解事件循环机制---EventLoop</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/17/javascript的作用域和上下文/">javascript的作用域和上下文</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/03/js类和原型/">js类和原型</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/02/DOM事件---扫盲/">DOM事件---扫盲</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/26/ES6-Reflect对象/">ES6--Reflect对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/25/proxy笔记/">proxy笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/24/js之Set和Map结构/">js之Set和Map结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/23/js之属性名的遍历/">js之属性名的遍历</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/coding仓库搭博客图床/">coding仓库搭博客图床</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">kungfufu.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

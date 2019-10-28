@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>js之Set和Map结构 | kungfufu</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/8.0.1/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/1.0.0/grids-responsive-min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/3.4.0/jquery.min.js"></script><link rel="icon" mask sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">js之Set和Map结构</h1><a id="logo" href="/.">kungfufu</a><p class="description">kungfufu的博客</p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a><a href="/atom.xml"><i class="fa fa-rss"> 订阅</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">js之Set和Map结构</h1><div class="post-meta">Jan 24, 2019</div><div class="post-content"><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>重读es6标准入门，补写笔记</p>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>Set是种类似数组的结构，可用for…of直接遍历，也可以用…展开。，但是它里面的元素不能重复（类似不能有===关系，但NaN!==NaN,Set里它和自身是相等的）。</p>
+<ul>
+<li><p>初始化</p>
+<blockquote>
+<p>let s = new Set();<br>let s = new Set([1,2,3]);传入具有itreable接口的结构都行，，常见为数组</p>
+</blockquote>
+</li>
+<li><p>常用方法</p>
+<blockquote>
+<ol>
+<li>add(value): Set</li>
+<li>delete(value): boolean</li>
+<li>has(value): boolean</li>
+<li>clear(): void<br>———————————遍历方法(遍历顺序就是插入顺序，类似队列)———————————</li>
+<li>keys()</li>
+<li>values()//Set的默认遍历器生成函数，所以可以直接for…of(扩展运算符内部使用的也是for…of)</li>
+<li>entries()</li>
+<li>forEach(callback)</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<p>数组去重：[…new Set([1,2,3,1])];// [1,2,3]<br>Set转数组：Array.from(set)或者直接[…set]</p>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><p>Map是一种值对值的数据结构，相比对象的键值对，它的键可以是任和类型的值，不局限于字符串。</p>
+<ul>
+<li><p>初始化</p>
+<blockquote>
+<p>let m = new Map();<br>let m = new Map([[‘val1’,’val2’]]);由键值对数组组成的数组初始化</p>
+</blockquote>
+</li>
+<li><p>常用方法</p>
+<blockquote>
+<p>1.set(key,value)<br>2.get(key)<br>3.has(key)<br>4.delete(key)<br>5.clear()<br>遍历方法和Set一样，另外2个都有size属性表示大小。</p>
+</blockquote>
+</li>
+<li><p>Map与对象，json对象，json数组的相互转换，留着用到的时候填坑-_-</p>
+</li>
+</ul>
+</div><div class="tags"><a href="/tags/js/">js</a></div><div class="post-nav"><a class="pre" href="/2019/01/25/proxy笔记/">proxy笔记</a><a class="next" href="/2019/01/23/js之属性名的遍历/">js之属性名的遍历</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"><input type="hidden" name="sitesearch" value="https://fyyhome.top"></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技术/">技术</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 标签</i></div><div class="tagcloud"><a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最近文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/03/04/js那些剪不断，理还乱的继承/">js那些剪不断，理还乱的继承</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/28/理解事件循环机制-EventLoop/">理解事件循环机制---EventLoop</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/17/javascript的作用域和上下文/">javascript的作用域和上下文</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/03/js类和原型/">js类和原型</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/02/02/DOM事件---扫盲/">DOM事件---扫盲</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/26/ES6-Reflect对象/">ES6--Reflect对象</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/25/proxy笔记/">proxy笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/24/js之Set和Map结构/">js之Set和Map结构</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/23/js之属性名的遍历/">js之属性名的遍历</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/22/coding仓库搭博客图床/">coding仓库搭博客图床</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友情链接</i></div><ul></ul><a href="http://www.example1.com/" title="site-name1" target="_blank">site-name1</a><ul></ul><a href="http://www.example2.com/" title="site-name2" target="_blank">site-name2</a><ul></ul><a href="http://www.example3.com/" title="site-name3" target="_blank">site-name3</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2019 <a href="/." rel="nofollow">kungfufu.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>
