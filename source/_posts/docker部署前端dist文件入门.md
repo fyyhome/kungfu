@@ -2,7 +2,7 @@
 title: docker部署前端dist文件入门
 date: 2018-05-03 21:58:19
 tags: docker
-category: 前端之外
+category: 技术
 ---
 
 ### 前言

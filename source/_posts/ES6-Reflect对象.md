@@ -1,7 +1,7 @@
 ---
 title: ES6--Reflect对象
 date: 2019-01-26 22:31:00
-tags: es6
+tags: js
 ---
 
 ### 前言

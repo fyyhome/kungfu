@@ -1,7 +1,7 @@
 ---
 title: 理解事件循环机制---EventLoop
 date: 2019-02-28 12:41:19
-tags: javascrpt, EventLoop
+tags: js
 ---
 
 ### 前言

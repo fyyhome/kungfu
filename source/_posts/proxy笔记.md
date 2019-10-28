@@ -1,9 +1,7 @@
 ---
 title: proxy笔记
 date: 2019-01-25 23:32:33
-tags:
-- js
-- es6
+tags: js
 comments: true
 ---
 
