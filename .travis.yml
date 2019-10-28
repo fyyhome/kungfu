@@ -1,9 +1,12 @@
-sudo: false
 language: node_js
 node_js:
-  - "8"
-install: npm install
-script: hexo generate
+  - 10
+cache: npm
+branches:
+  only:
+    - master
+script: 
+  - hexo generate
 deploy: 
   provider: pages
   skip_cleanup: true
